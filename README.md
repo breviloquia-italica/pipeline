@@ -8,8 +8,10 @@ flowchart TD;
 
 10[[10_extract-places.sh]]:::code;
 11[[11_extract-tweets.sh]]:::code;
+12[[12_flatten-tweets.sh]]:::code;
 2022-MM-DD.jsonl --- 10 --> places.jsonl:::data;
 2022-MM-DD.jsonl --- 11 --> tweets.jsonl:::data;
+2022-MM-DD.jsonl --- 12 --> tweets.csv:::data;
 
 20[[20_cleanup-places.ipynb]]:::code;
 21[[21_cleanup-tweets.ipynb]]:::code;
