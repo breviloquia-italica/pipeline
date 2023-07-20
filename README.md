@@ -13,10 +13,24 @@ flowchart TD;
 2022-MM-DD.jsonl --- 11 --> tweets.jsonl:::data;
 2022-MM-DD.jsonl --- 12 --> tweets.csv:::data;
 
-20[[20_cleanup-places.ipynb]]:::code;
-21[[21_cleanup-tweets.ipynb]]:::code;
+20[[20_cleanup-places.py]]:::code;
+21[[21_cleanup-tweets.py]]:::code;
 places.jsonl --- 20 --> places.parquet:::data;
 tweets.jsonl --- 21 --> tweets.parquet:::data;
+
+30[[30_tokenize-tweets.ipynb]]:::code;
+attested.csv:::data --- 30;
+tweets.parquet --- 30 --> tokens.parquet:::data;
+
+40[[40_compute-wforms-occ.ipynb]]:::code;
+tokens.parquet --- 40 --> wforms-occ.parquet:::data;
+
+41[[41_compute-wforms-usr.ipynb]]:::code;
+tokens.parquet --- 41 --> wforms-usr.parquet:::data;
+
+50[[50_analyze-wforms.ipynb]]:::code;
+wforms-occ.parquet --- 50;
+wforms-usr.parquet --- 50 --> wforms.parquet:::data;
 
 classDef code stroke:red;
 classDef data stroke:green;

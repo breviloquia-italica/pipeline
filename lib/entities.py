@@ -21,7 +21,7 @@ def extract_entity_ranges(entities):
   # NOTE: we sort now to simplify future processing
   return sorted(list(entity_ranges), key=lambda l: l[0], reverse=True)
 
-def embed_entity_annotations(row):
+def inline_entities_in_full_text(row):
   entity_ranges = extract_entity_ranges(row["entities"])
   text = row["full_text"]
   for beg_idx, end_idx, idx in entity_ranges:
