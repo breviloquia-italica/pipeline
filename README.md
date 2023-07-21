@@ -18,9 +18,14 @@ flowchart TD;
 places.jsonl --- 20 --> places.parquet[/places.parquet/]:::data;
 tweets.jsonl --- 21 --> tweets.parquet[/tweets.parquet/]:::data;
 
+31[31_locate-tweets.ipynb]:::code;
+places.parquet --- 31;
+tweets.parquet --- 31 --> tweets-geo.parquet[/tweets-geo.parquet/]:::data;
+
 30[30_tokenize-tweets.ipynb]:::code;
+tweets.parquet --- 30;
 attested.csv[/attested.csv/]:::data --- 30;
-tweets.parquet --- 30 --> tokens.parquet[/tokens.parquet/]:::data;
+30 --> tokens.parquet[/tokens.parquet/]:::data;
 
 40[40_compute-wforms-occ.ipynb]:::code;
 tokens.parquet --- 40 --> wforms-occ.parquet[/wforms-occ.parquet/]:::data;
