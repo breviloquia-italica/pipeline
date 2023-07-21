@@ -28,9 +28,23 @@ tokens.parquet --- 40 --> wforms-occ.parquet[/wforms-occ.parquet/]:::data;
 41[41_compute-wforms-usr.ipynb]:::code;
 tokens.parquet --- 41 --> wforms-usr.parquet[/wforms-usr.parquet/]:::data;
 
-50[50_analyze-wforms.ipynb]:::code;
+50[50_export-ann-batches.py]:::code;
 wforms-occ.parquet --- 50;
-wforms-usr.parquet --- 50 --> wforms.parquet[/wforms.parquet/]:::data;
+wforms-usr.parquet --- 50;
+50 --> wforms-ann-batch-N.csv[/"wforms-ann-batch-N.csv"/]:::data;
+
+51[[51_process-ann-batches.md]]:::code;
+wforms-ann-batch-N.csv --- 51 --> wforms-ann-batch-N.gsheet[/wforms-ann-batch-N.gsheet/]:::data;
+wforms-ann.parquet -.-> 50;
+
+52[52_import-annotations.py]:::code;
+wforms-ann-batch-N.gsheet --- 52 --> wforms-ann.parquet[/wforms-ann.parquet/]:::data;
+
+60[60_analyze-wforms.ipynb]:::code;
+wforms-occ.parquet --- 60;
+wforms-ann.parquet --- 60;
+wforms-usr.parquet --- 60;
+60 --> wforms.parquet[/wforms.parquet/]:::data;
 
 classDef code stroke:red;
 classDef data stroke:green,shape:rectangle;
