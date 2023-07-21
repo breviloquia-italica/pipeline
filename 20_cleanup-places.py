@@ -2,6 +2,7 @@
 
 import modin.pandas as pd
 from shapely.geometry import Polygon
+import geopandas as gpd
 
 # Load dataset.
 places = pd.read_json("places.jsonl", lines=True)
@@ -29,8 +30,12 @@ assert (
 
 # Simplify the representation of `bounding_box` to the wkt of a Shapely polygon.
 places["bounding_box"] = places["bounding_box"].map(
-    lambda bb: Polygon([tuple(point) for point in bb["coordinates"][0]]).wkt
+    lambda bb: Polygon([tuple(point) for point in bb["coordinates"][0]])
 )
 
-# Save dataset. The dataset is tiny, so we force writing a single file.
-places._to_pandas().to_parquet("places.parquet")
+# Calculate centroids of bounding boxes.
+places = gpd.GeoDataFrame(places._to_pandas(), geometry="bounding_box")
+places["centroid"] = places["bounding_box"].centroid
+
+# Save dataset.
+places.to_wkt().to_parquet("places.parquet")
