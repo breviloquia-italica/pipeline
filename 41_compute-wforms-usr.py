@@ -8,9 +8,12 @@ tweets = pd.read_parquet("tokens.parquet", columns=["doy", "wforms_new"])
 tweets = tweets.join(pd.read_parquet("tweets.parquet", columns=["user_id"]))
 
 # Compute dataframe with exploded prefiltered forms.
-wforms = tweets[tweets["wforms_new"].apply(len) > 0]
-wforms = wforms.explode("wforms_new")
-wforms.rename(columns={"wforms_new": "wf"}, inplace=True)
+wforms = (
+    tweets[tweets["wforms_new"].apply(len) > 0]
+    .explode("wforms_new")
+    .reset_index(drop=True)
+    .rename(columns={"wforms_new": "wf"})
+)
 
 # Compute daily and total counts.
 ui_count_per_doy = tweets.groupby('doy')['user_id'].nunique()

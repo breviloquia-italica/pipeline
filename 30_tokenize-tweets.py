@@ -30,9 +30,10 @@ tweets["wforms_new"] = tweets["wforms"].apply(
 # Quantize timestamp as day of year.
 tweets["doy"] = tweets["created_at"].dt.dayofyear
 
-# TODO: decide whether i fucked up here or not by deduplicating.
-tweets["wforms"] = tweets["wforms"].apply(set)
-tweets["wforms_new"] = tweets["wforms_new"].apply(set)
+# NOTE: remember NOT to deduplicate to avoid undercounting.
+# tweets["wforms"] = tweets["wforms"].apply(set)
+# tweets["wforms_new"] = tweets["wforms_new"].apply(set)
+
 tweets["wforms_count"] = tweets["wforms"].apply(len)
 
 # Save dataset.

@@ -7,9 +7,13 @@ from scipy.stats import spearmanr
 tweets = pd.read_parquet("tokens.parquet", columns=["doy", "wforms_new", "wforms_count"])
 
 # Compute dataframe with exploded prefiltered forms.
-wforms = tweets[tweets["wforms_new"].apply(len) > 0]
-wforms = wforms.explode("wforms_new")
-wforms.rename(columns={"wforms_new": "wf"}, inplace=True)
+wforms = (
+    tweets[tweets["wforms_new"].apply(len) > 0]
+    .drop(columns=["wforms_count"])
+    .explode("wforms_new")
+    .reset_index(drop=True)
+    .rename(columns={"wforms_new": "wf"})
+)
 
 # Compute daily and total counts.
 wf_count_per_doy = tweets.groupby("doy")["wforms_count"].sum()
@@ -33,21 +37,24 @@ wf_fpm_at_doy = pd.DataFrame(
 #       cs = np.cumsum(row)
 #       bot = 0                    # zero
 #       top = cs.loc[365]          # maximum (last element due to monotonicity)
-#       beg = np.argmax(cs != bot) # first nonzero element (first occurrence)
-#       end = np.argmax(cs == top) # first maximum element (last occurrence)
+#       fst = np.argmax(cs != bot) # first nonzero element (first occurrence)
+#       lst = np.argmax(cs == top) # first maximum element (last occurrence)
 #       # simplified calculation for the normalized residue
-#       res = cs[beg:end].sum() # * 2 / top / (end-beg) - 1 # NOTE: normalization can be done later WLOG
-#       return pd.Series([beg, end, top, res])
+#       res = cs[fst:lst].sum() # * 2 / top / (lst-fst) - 1 # NOTE: normalization can be done later WLOG
+#       return pd.Series([fst, lst, top, res])
 #
 
 wf_fpm_at_doy.columns = wf_fpm_at_doy.columns.astype(str)
 cs = wf_fpm_at_doy.cumsum(axis=1) # requires str column index
-beg = cs.iloc[:, ::-1].idxmin(axis=1).astype(int)
-end = cs.iloc[:, ::+1].idxmax(axis=1).astype(int) - 1
+fst = cs.ne(0).idxmax(axis=1).astype(int) - 1
+lst = cs.idxmax(axis=1).astype(int) - 1
+
 top = cs.max(axis=1)
-res = cs.sum(axis=1) - (365 - end) * top # TODO: normalize residue
-wf_heuristic = pd.concat({ "beg": beg, "end": end, "top": top, "res": res }, axis=1)
-del cs, beg, end, top, res # just to clarify this is intermediate stuff
+res = cs.sum(axis=1) - (365 - lst) * top # TODO: normalize residue
+cvx = 2 * res / top / (lst - fst) - 1
+
+wf_heuristic = pd.concat({ "fst": fst, "lst": lst, "top": top, "cvx": cvx }, axis=1)
+del cs, fst, lst, top, res, cvx # just to clarify this is intermediate stuff
 
 # Calculate spearman rank correlation (requires int column index).
 wf_fpm_at_doy.columns = wf_fpm_at_doy.columns.astype(int)
