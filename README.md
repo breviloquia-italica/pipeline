@@ -42,14 +42,14 @@ wforms-usr.parquet --- 50;
 wforms-ann-batch-N.csv --- 51 --> wforms-ann-batch-N.gsheet[/wforms-ann-batch-N.gsheet/]:::data;
 wforms-ann.parquet -.-> 50;
 
-52[52_import-annotations.py]:::code;
+52[52_import-ann-batches.py]:::code;
 wforms-ann-batch-N.gsheet --- 52 --> wforms-ann.parquet[/wforms-ann.parquet/]:::data;
 
-60[60_analyze-wforms.ipynb]:::code;
-wforms-occ.parquet --- 60;
-wforms-ann.parquet --- 60;
-wforms-usr.parquet --- 60;
-60 --> wforms.parquet[/wforms.parquet/]:::data;
+90[90_plot-choropleths.ipynb]:::code;
+tweets-geo.parquet --- 90;
+tokens.parquet --- 90;
+regions.geojson[/regions.geojson/]:::data --- 90;
+wforms-ann.parquet --- 90;
 
 classDef code stroke:red;
 classDef data stroke:green,shape:rectangle;
