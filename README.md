@@ -3,6 +3,12 @@
 ```mermaid
 flowchart TD;
 
+attested.csv[/attested.csv/]:::extdata;
+ita-regions.geojson[/ita-regions.geojson/]:::extdata
+wld-nations.geojson[/wld-nations.geojson/]:::extdata
+
+subgraph dataprep
+
 00[[00_data-retrieval.md]]:::code;
 00 --> 2022-MM-DD.jsonl[/2022-MM-DD.jsonl/]:::data;
 
@@ -24,7 +30,7 @@ tweets.parquet --- 31 --> tweets-geo.parquet[/tweets-geo.parquet/]:::data;
 
 30[30_tokenize-tweets.ipynb]:::code;
 tweets.parquet --- 30;
-attested.csv[/attested.csv/]:::data --- 30;
+attested.csv --- 30;
 30 --> tokens.parquet[/tokens.parquet/]:::data;
 
 40[40_compute-wforms-occ.ipynb]:::code;
@@ -33,24 +39,44 @@ tokens.parquet --- 40 --> wforms-occ.parquet[/wforms-occ.parquet/]:::data;
 41[41_compute-wforms-usr.ipynb]:::code;
 tokens.parquet --- 41 --> wforms-usr.parquet[/wforms-usr.parquet/]:::data;
 
+end
+
+subgraph annotation
+
 50[50_export-ann-batches.py]:::code;
 wforms-occ.parquet --- 50;
 wforms-usr.parquet --- 50;
 50 --> wforms-ann-batch-N.csv[/"wforms-ann-batch-N.csv"/]:::data;
 
 51[[51_process-ann-batches.md]]:::code;
+tweets.csv --> 51;
 wforms-ann-batch-N.csv --- 51 --> wforms-ann-batch-N.gsheet[/wforms-ann-batch-N.gsheet/]:::data;
 wforms-ann.parquet -.-> 50;
 
 52[52_import-ann-batches.py]:::code;
 wforms-ann-batch-N.gsheet --- 52 --> wforms-ann.parquet[/wforms-ann.parquet/]:::data;
 
-90[90_plot-choropleths.ipynb]:::code;
-tweets-geo.parquet --- 90;
-tokens.parquet --- 90;
-regions.geojson[/regions.geojson/]:::data --- 90;
-wforms-ann.parquet --- 90;
+end
+
+subgraph analysis
+
+90[90_tweets-statistics.ipynb]:::code;
+wld-nations.geojson --- 90;
+places.parquet --- 90;
+tweets.parquet --- 90;
+ita-regions.geojson --- 90;
+
+92[92_annos-statistics.ipynb]:::code;
+ita-regions.geojson --- 92;
+tweets-geo.parquet --- 92;
+tokens.parquet --- 92;
+wforms-ann.parquet ---- 92;
+
+end
 
 classDef code stroke:red;
 classDef data stroke:green,shape:rectangle;
+classDef extdata shape:rectangle;
 ```
+
+---
