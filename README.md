@@ -35,7 +35,7 @@ tweets.parquet --- 31 --> tweets-geo.parquet[/tweets-geo.parquet/]:::data;
 
 end
 
-subgraph "Forms selection/annotation"
+subgraph "Forms selection"
 
 40[40_compute-wforms-occ.py]:::code;
 tokens.parquet --- 40 --> wforms-occ.parquet[/wforms-occ.parquet/]:::data;
@@ -43,10 +43,17 @@ tokens.parquet --- 40 --> wforms-occ.parquet[/wforms-occ.parquet/]:::data;
 41[41_compute-wforms-usr.py]:::code;
 tokens.parquet --- 41 --> wforms-usr.parquet[/wforms-usr.parquet/]:::data;
 
+42[42_compute-wforms-bat.py]:::code;
+wforms-occ.parquet --- 42;
+wforms-usr.parquet --- 42;
+42 --> wforms-bat.parquet[/wforms-bat.parquet/]:::data;
+
+end
+
+subgraph "Forms annotation"
+
 50[50_export-ann-batches.py]:::code;
-wforms-occ.parquet --- 50;
-wforms-usr.parquet --- 50;
-50 --> wforms-ann-batch-N.csv[/"wforms-ann-batch-{1,2}.csv"/]:::data;
+wforms-bat.parquet --- 50 --> wforms-ann-batch-N.csv[/"wforms-ann-batch-{1,2}.csv"/]:::data;
 
 51[[51_process-ann-batches.md]]:::code;
 tweets.csv -.........-> 51;
