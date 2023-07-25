@@ -4,8 +4,8 @@
 flowchart TD;
 
 attested.csv[/attested.csv/]:::extdata;
-ita-regions.geojson[/ita-regions.geojson/]:::extdata
 wld-nations.geojson[/wld-nations.geojson/]:::extdata
+ita-regions.geojson[/ita-regions.geojson/]:::extdata
 
 subgraph "Data preparation"
 
@@ -29,9 +29,9 @@ tweets-geo.parquet[/tweets-geo.parquet/]:::data;
 
 00 --> 2022-MM-DD.jsonl;
 
-2022-MM-DD.jsonl --- 10 --> places.jsonl;
-2022-MM-DD.jsonl --- 11 --> tweets.jsonl;
 2022-MM-DD.jsonl --- 12 --> tweets.csv;
+2022-MM-DD.jsonl --- 11 --> tweets.jsonl;
+2022-MM-DD.jsonl --- 10 --> places.jsonl;
 
 places.jsonl --- 20 --> places.parquet;
 tweets.jsonl --- 21 --> tweets.parquet;
@@ -91,20 +91,19 @@ subgraph "Analysis"
 91[91_wforms-statistics.ipynb]:::code;
 92[92_annos-statistics.ipynb]:::code;
 
-wld-nations.geojson --- 90;
 places.parquet --- 90;
+wld-nations.geojson --- 90;
 tweets.parquet --- 90;
-ita-regions.geojson --- 90;
-90 -.-> 90;
-
-tokens.parquet --- 91;
-wforms-bat.parquet ---- 91;
-91 -.-> 91;
-
-ita-regions.geojson --- 92;
+ita-regions.geojson ---- 92;
+ita-regions.geojson ---- 90;
 tweets-geo.parquet --- 92;
+tokens.parquet --- 91;
 tokens.parquet --- 92;
+wforms-bat.parquet --- 91;
 wforms-ann.parquet --- 92;
+
+90 -.-> 90;
+91 -.-> 91;
 92 -.-> 92;
 
 end
