@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import modin.pandas as pd
+import os
 
 # Load dataset.
 wf_fpm_at_doy = pd.read_parquet(
@@ -12,9 +13,9 @@ del wf_fpm_at_doy, ui_fpt_at_doy
 
 
 # NOTE: this must NEVER be changed
-wforms["fst_batch"] = (wforms["oc_tot"] > 5) & (
+wforms["fst_batch"] = (
     (abs(wforms["oc_rho"]) > 0.2) | (abs(wforms["ui_rho"]) > 0.2)
-)
+) # & (wforms["oc_tot"] > 5) # NOTE: this excludes a single form, so...
 
 # NOTE: this must NEVER be changed
 wforms["snd_batch"] = (
@@ -26,37 +27,33 @@ wforms["snd_batch"] = (
     & (wforms["oc_lst"] > (365 - 14))
 )
 
-
-# The export we annotated is older than this version of the code.
-# These are sanity checks to keep track of the discrepancies.
-# There are 6 less forms due to tokenization/serialization changes.
-assert wforms.shape[0] == 745127 - 6
-# There are 3 more forms due to a fix in forms counting.
-assert wforms["fst_batch"].sum() == 4292 + 3
+# Sanity check.
+assert wforms.shape[0] == 745121
+assert wforms["fst_batch"].sum() == 4296
 assert wforms["snd_batch"].sum() == 7906
 assert (wforms["fst_batch"] & wforms["snd_batch"]).sum() == 678
 
-# Export the first annotation batch.
-wforms[wforms["fst_batch"]].to_csv("wforms-ann-batch-1.csv", columns=[])
+columns = ["status", "category", "attestation", "notes"]
 
-# Export the second annotation batch.
-wforms[wforms["snd_batch"] & ~wforms["fst_batch"]].to_csv(
-    "wforms-ann-batch-2.csv", columns=[]
-)
-
-
-# Export the third annotation batch.
-trd_batch = wforms[
-    (
-        (  # this is just fst_batch w/o conditions on oc_tot
-            (abs(wforms["oc_rho"]) > 0.2) | (abs(wforms["ui_rho"]) > 0.2)
-        )
-        | wforms["snd_batch"]
-    )
-    & ~wforms.index.isin(pd.read_parquet("wforms-ann.parquet").index)
-]
-# This is a fix for discrepancies and an extension to fst_batch mask, so we need to export it only once.
-if trd_batch.empty:
-    print("Skipping third batch.")
+# Import (or generate blank) annotations.
+if os.path.exists("wforms-ann.parquet"):
+    ann = pd.read_parquet("wforms-ann.parquet", columns=columns)
 else:
-    trd_batch.to_csv("wforms-ann-batch-3.csv", columns=[])
+    ann = pd.DataFrame(
+        {
+            "wf": pd.Series(dtype=str),
+            "status": pd.Series(dtype=float),
+            "category": pd.Series(dtype=str),
+            "attestation": pd.Series(dtype=str),
+            "notes": pd.Series(dtype=str),
+        }
+    ).set_index("wf")
+
+# Modin dislikes joining empty dataframes, so we add a placecholder (which is ok since we're left joining it away).
+ann.loc[".keep"] = None
+
+fst = wforms[wforms["fst_batch"]]
+snd = wforms[wforms["snd_batch"] & ~wforms["fst_batch"]]
+
+fst.join(ann, how="left").to_csv("wforms-ann-batch-1.csv", columns=columns)
+snd.join(ann, how="left").to_csv("wforms-ann-batch-2.csv", columns=columns)
