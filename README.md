@@ -24,12 +24,12 @@ subgraph "Data preparation"
 places.jsonl --- 20 --> places.parquet[/places.parquet/]:::data;
 tweets.jsonl --- 21 --> tweets.parquet[/tweets.parquet/]:::data;
 
-30[30_tokenize-tweets.ipynb]:::code;
+30[30_tokenize-tweets.py]:::code;
 tweets.parquet --- 30;
 attested.csv --- 30;
 30 --> tokens.parquet[/tokens.parquet/]:::data;
 
-31[31_locate-tweets.ipynb]:::code;
+31[31_locate-tweets.py]:::code;
 places.parquet --- 31;
 tweets.parquet --- 31 --> tweets-geo.parquet[/tweets-geo.parquet/]:::data;
 
@@ -37,10 +37,10 @@ end
 
 subgraph "Forms selection/annotation"
 
-40[40_compute-wforms-occ.ipynb]:::code;
+40[40_compute-wforms-occ.py]:::code;
 tokens.parquet --- 40 --> wforms-occ.parquet[/wforms-occ.parquet/]:::data;
 
-41[41_compute-wforms-usr.ipynb]:::code;
+41[41_compute-wforms-usr.py]:::code;
 tokens.parquet --- 41 --> wforms-usr.parquet[/wforms-usr.parquet/]:::data;
 
 50[50_export-ann-batches.py]:::code;
@@ -50,7 +50,7 @@ wforms-usr.parquet --- 50;
 
 51[[51_process-ann-batches.md]]:::code;
 tweets.csv -.........-> 51;
-wforms-ann-batch-N.csv --- 51 --> wforms-ann-batch-N.gsheet[/"wforms-ann-batch-{1,2}.gsheet"/]:::data;
+wforms-ann-batch-N.csv --- 51 --> wforms-ann-batch-N.gsheet[/"wforms-ann-batch-{1,2}.gsheet"/]:::extdata;
 wforms-ann.parquet -.-> 50;
 
 52[52_import-ann-batches.py]:::code;
@@ -65,12 +65,14 @@ wld-nations.geojson --- 90;
 places.parquet --- 90;
 tweets.parquet --- 90;
 ita-regions.geojson --- 90;
+90 -.-> 90;
 
 92[92_annos-statistics.ipynb]:::code;
 ita-regions.geojson --- 92;
 tweets-geo.parquet --- 92;
 tokens.parquet --- 92;
 wforms-ann.parquet ---- 92;
+92 -.-> 92;
 
 end
 
