@@ -7,7 +7,7 @@ attested.csv[/attested.csv/]:::extdata;
 ita-regions.geojson[/ita-regions.geojson/]:::extdata
 wld-nations.geojson[/wld-nations.geojson/]:::extdata
 
-subgraph dataprep
+subgraph "Data preparation"
 
 00[[00_data-retrieval.md]]:::code;
 00 --> 2022-MM-DD.jsonl[/2022-MM-DD.jsonl/]:::data;
@@ -24,14 +24,18 @@ subgraph dataprep
 places.jsonl --- 20 --> places.parquet[/places.parquet/]:::data;
 tweets.jsonl --- 21 --> tweets.parquet[/tweets.parquet/]:::data;
 
-31[31_locate-tweets.ipynb]:::code;
-places.parquet --- 31;
-tweets.parquet --- 31 --> tweets-geo.parquet[/tweets-geo.parquet/]:::data;
-
 30[30_tokenize-tweets.ipynb]:::code;
 tweets.parquet --- 30;
 attested.csv --- 30;
 30 --> tokens.parquet[/tokens.parquet/]:::data;
+
+31[31_locate-tweets.ipynb]:::code;
+places.parquet --- 31;
+tweets.parquet --- 31 --> tweets-geo.parquet[/tweets-geo.parquet/]:::data;
+
+end
+
+subgraph "Forms selection/annotation"
 
 40[40_compute-wforms-occ.ipynb]:::code;
 tokens.parquet --- 40 --> wforms-occ.parquet[/wforms-occ.parquet/]:::data;
@@ -39,18 +43,14 @@ tokens.parquet --- 40 --> wforms-occ.parquet[/wforms-occ.parquet/]:::data;
 41[41_compute-wforms-usr.ipynb]:::code;
 tokens.parquet --- 41 --> wforms-usr.parquet[/wforms-usr.parquet/]:::data;
 
-end
-
-subgraph annotation
-
 50[50_export-ann-batches.py]:::code;
 wforms-occ.parquet --- 50;
 wforms-usr.parquet --- 50;
-50 --> wforms-ann-batch-N.csv[/"wforms-ann-batch-N.csv"/]:::data;
+50 --> wforms-ann-batch-N.csv[/"wforms-ann-batch-{1,2}.csv"/]:::data;
 
 51[[51_process-ann-batches.md]]:::code;
-tweets.csv --> 51;
-wforms-ann-batch-N.csv --- 51 --> wforms-ann-batch-N.gsheet[/wforms-ann-batch-N.gsheet/]:::data;
+tweets.csv -.........-> 51;
+wforms-ann-batch-N.csv --- 51 --> wforms-ann-batch-N.gsheet[/"wforms-ann-batch-{1,2}.gsheet"/]:::data;
 wforms-ann.parquet -.-> 50;
 
 52[52_import-ann-batches.py]:::code;
@@ -58,7 +58,7 @@ wforms-ann-batch-N.gsheet --- 52 --> wforms-ann.parquet[/wforms-ann.parquet/]:::
 
 end
 
-subgraph analysis
+subgraph "Analysis"
 
 90[90_tweets-statistics.ipynb]:::code;
 wld-nations.geojson --- 90;
