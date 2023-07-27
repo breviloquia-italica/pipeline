@@ -9,22 +9,13 @@ from lib.tokenizer import tokenize_and_filter_wforms
 tweets = pd.read_parquet("tweets.parquet")
 
 # Strip emojis, normalize whitespace, normalize case, tokenize and extract word forms.
-tweets["wforms"] = (
+tweets["tokens"] = (
     tweets["text_with_inlined_entities"]
     .apply(replace_emoji, replace=" ")
     .str.replace(r"\s+", " ", regex=True)
     .str.strip()
     .str.lower()
     .apply(tokenize_and_filter_wforms)
-)
-
-# Load old attested forms dataset.
-attested_forms = set(pd.read_csv("lessico-TreeTagger.csv", header=None)[0].str.lower())
-attested_forms |= {"#" + f for f in attested_forms}
-
-# Prefilter old attested forms.
-tweets["wforms_new"] = tweets["wforms"].apply(
-    lambda wfs: [wf for wf in wfs if wf not in attested_forms]
 )
 
 # Quantize timestamp as day of year.
@@ -34,7 +25,7 @@ tweets["doy"] = tweets["created_at"].dt.dayofyear
 # tweets["wforms"] = tweets["wforms"].apply(set)
 # tweets["wforms_new"] = tweets["wforms_new"].apply(set)
 
-tweets["wforms_count"] = tweets["wforms"].apply(len)
+tweets["token_count"] = tweets["tokens"].apply(len)
 
 # Save dataset.
-tweets[["doy", "wforms", "wforms_new", "wforms_count"]].to_parquet("tokens.parquet")
+tweets[["doy", "tokens", "token_count"]].to_parquet("tweets-tok.parquet")

@@ -4,15 +4,15 @@ import modin.pandas as pd
 from scipy.stats import spearmanr
 
 # Load dataset.
-tweets = pd.read_parquet("tokens.parquet", columns=["doy", "wforms_new"])
+tweets = pd.read_parquet("tweets-tok.parquet", columns=["doy", "tokens"])
 tweets = tweets.join(pd.read_parquet("tweets.parquet", columns=["user_id"]))
 
 # Compute dataframe with exploded prefiltered forms.
 wforms = (
-    tweets[tweets["wforms_new"].apply(len) > 0]
-    .explode("wforms_new")
+    tweets
+    .explode("tokens")
     .reset_index(drop=True)
-    .rename(columns={"wforms_new": "wf"})
+    .rename(columns={"tokens": "wf"})
 )
 
 # Compute daily and total counts.

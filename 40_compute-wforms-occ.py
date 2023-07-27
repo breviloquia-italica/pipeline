@@ -4,19 +4,19 @@ import modin.pandas as pd
 from scipy.stats import spearmanr
 
 # Load dataset.
-tweets = pd.read_parquet("tokens.parquet", columns=["doy", "wforms_new", "wforms_count"])
+tweets = pd.read_parquet("tweets-tok.parquet", columns=["doy", "tokens", "token_count"])
 
 # Compute dataframe with exploded prefiltered forms.
 wforms = (
-    tweets[tweets["wforms_new"].apply(len) > 0]
-    .drop(columns=["wforms_count"])
-    .explode("wforms_new")
+    tweets
+    .drop(columns=["token_count"])
+    .explode("tokens")
     .reset_index(drop=True)
-    .rename(columns={"wforms_new": "wf"})
+    .rename(columns={"tokens": "wf"})
 )
 
 # Compute daily and total counts.
-wf_count_per_doy = tweets.groupby("doy")["wforms_count"].sum()
+wf_count_per_doy = tweets.groupby("doy")["token_count"].sum()
 wf_count = wforms["wf"].value_counts()
 
 # Compute renormalized pivot table with daily form frequency (per million).

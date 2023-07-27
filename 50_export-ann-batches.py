@@ -4,7 +4,7 @@ import modin.pandas as pd
 import os
 
 # Load dataset.
-wforms = pd.read_parquet("wforms-bat.parquet", columns=["fst_batch", "snd_batch"])
+wforms = pd.read_parquet("wforms-bat.parquet", columns=["tt_att", "fst_batch", "snd_batch"])
 
 columns = ["status", "category", "attestation", "notes"]
 
@@ -25,8 +25,9 @@ else:
 # Modin dislikes joining empty dataframes, so we add a placecholder (which is ok since we're left joining it away).
 ann.loc[".keep"] = None
 
-fst = wforms[wforms["fst_batch"]]
-snd = wforms[wforms["snd_batch"] & ~wforms["fst_batch"]]
+# NOTE: we keep forms attested in TreeTagger out of the loop.
+fst = wforms[~wforms["tt_att"] & wforms["fst_batch"]]
+snd = wforms[~wforms["tt_att"] & wforms["snd_batch"] & ~wforms["fst_batch"]]
 
 fst.join(ann, how="left").to_csv("wforms-ann-batch-1.csv", columns=columns)
 snd.join(ann, how="left").to_csv("wforms-ann-batch-2.csv", columns=columns)

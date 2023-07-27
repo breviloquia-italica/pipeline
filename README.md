@@ -36,7 +36,7 @@ subgraph P2 [TRANSFORMATION]
 30[30_tokenize-tweets.py]:::code;
 31[31_locate-tweets.py]:::code;
 
-tokens.parquet[/tokens.parquet/]:::data;
+tweets-tok.parquet[/tweets-tok.parquet/]:::data;
 tweets-geo.parquet[/tweets-geo.parquet/]:::data;
 
 _01[/world-nations.geojson/]:::extdata --- 31;
@@ -46,8 +46,7 @@ tweets.parquet --- 31;
 31 --> tweets-geo.parquet;
 
 tweets.parquet --- 30;
-_03[/attested-forms.csv/]:::extdata --- 30;
-30 --> tokens.parquet;
+30 --> tweets-tok.parquet;
 
 end
 
@@ -61,13 +60,14 @@ wforms-occ.parquet[/wforms-occ.parquet/]:::data;
 wforms-usr.parquet[/wforms-usr.parquet/]:::data;
 wforms-bat.parquet[/wforms-bat.parquet/]:::data;
 
-tokens.parquet --- 40 --> wforms-occ.parquet;
+tweets-tok.parquet --- 40 --> wforms-occ.parquet;
 
-tokens.parquet --- 41;
+tweets-tok.parquet --- 41;
 tweets.parquet --- 41;
 41 --> wforms-usr.parquet;
 
 wforms-occ.parquet --- 42;
+_03[/attested-forms.csv/]:::extdata --- 42;
 wforms-usr.parquet --- 42;
 42 --> wforms-bat.parquet;
 
@@ -105,14 +105,14 @@ direction LR;
 
 places.parquet.ref[/places.parquet/]:::dataref;
 tweets.parquet.ref[/tweets.parquet/]:::dataref;
-tokens.parquet.ref[/tokens.parquet/]:::dataref;
+tweets-tok.parquet.ref[/tweets-tok.parquet/]:::dataref;
 tweets-geo.parquet.ref[/tweets-geo.parquet/]:::dataref;
 wforms-bat.parquet.ref[/wforms-bat.parquet/]:::dataref;
 wforms-ann.parquet.ref[/wforms-ann.parquet/]:::dataref;
 
 wforms-bat.parquet.ref --- 91;
-tokens.parquet.ref --- 91;
-tokens.parquet.ref --- 92;
+tweets-tok.parquet.ref --- 91;
+tweets-tok.parquet.ref --- 92;
 wforms-ann.parquet.ref --- 92;
 tweets-geo.parquet.ref --- 92;
 _04[/ita-regions.geojson/]:::extdata --- 92;

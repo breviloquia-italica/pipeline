@@ -11,6 +11,10 @@ ui_fpt_at_doy = pd.read_parquet("wforms-usr.parquet", columns=["tot", "rho"])
 wforms = ui_fpt_at_doy.add_prefix("ui_").join(wf_fpm_at_doy.add_prefix("oc_"))
 del wf_fpm_at_doy, ui_fpt_at_doy
 
+# Load old attested forms dataset and check presence.
+attested_forms = set(pd.read_csv("lessico-TreeTagger.csv", header=None)[0].str.lower())
+attested_forms |= {"#" + f for f in attested_forms}
+wforms["tt_att"] = wforms.index.isin(attested_forms)
 
 # NOTE: this must NEVER be changed
 wforms["fst_batch"] = (
@@ -28,10 +32,14 @@ wforms["snd_batch"] = (
 )
 
 # Sanity check.
-assert wforms.shape[0] == 745121
-assert wforms["fst_batch"].sum() == 4296
-assert wforms["snd_batch"].sum() == 7906
-assert (wforms["fst_batch"] & wforms["snd_batch"]).sum() == 678
+assert wforms.shape[0] == 925843
+assert wforms["fst_batch"].sum() == 6737
+assert wforms["snd_batch"].sum() == 21132
+assert (wforms["fst_batch"] & wforms["snd_batch"]).sum() == 979
+assert (~wforms["tt_att"]).sum() == 745121
+assert (~wforms["tt_att"] & wforms["fst_batch"]).sum() == 4296
+assert (~wforms["tt_att"] & wforms["snd_batch"]).sum() == 7906
+assert (~wforms["tt_att"] & wforms["fst_batch"] & wforms["snd_batch"]).sum() == 678
 
 # Save dataset.
-wforms[["fst_batch", "snd_batch"]].to_parquet("wforms-bat.parquet")
+wforms[["tt_att", "fst_batch", "snd_batch"]].to_parquet("wforms-bat.parquet")
