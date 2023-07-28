@@ -49,7 +49,7 @@ assert ~snd["wf"].str.contains(r"[\uE000-\uF8FF]", na=False).any()
 if snd["wf"].duplicated().any():
     print("Second batch: normalizing duplicates.")
     snd["status"].fillna(-np.inf, inplace=True)
-    snd = snd.loc[fst.groupby("wf")["status"].idxmax()]
+    snd = snd.loc[snd.groupby("wf")["status"].idxmax()]
     snd["status"].replace(-np.inf, np.nan, inplace=True)
 assert ~snd["wf"].duplicated().any()
 
