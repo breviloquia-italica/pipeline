@@ -95,36 +95,33 @@ wforms-ann-batch-N.gsheet --- 52 --> wforms-ann.parquet;
 
 end
 
-%%subgraph P5 [ANALYSIS]
-%%direction LR;
-%%90[90_tweets-statistics.ipynb]:::code;
-%%91[91_wforms-statistics.ipynb]:::code;
-%%92[92_annos-statistics.ipynb]:::code;
-%%places.parquet.ref[/places.parquet/]:::dataref;
-%%tweets.parquet.ref[/tweets.parquet/]:::dataref;
-%%tweets-tok.parquet.ref[/tweets-tok.parquet/]:::dataref;
-%%tweets-geo.parquet.ref[/tweets-geo.parquet/]:::dataref;
-%%wforms-bat.parquet.ref[/wforms-bat.parquet/]:::dataref;
-%%wforms-ann.parquet.ref[/wforms-ann.parquet/]:::dataref;
-%%wforms-bat.parquet.ref --- 91;
-%%tweets-tok.parquet.ref --- 91;
-%%tweets-tok.parquet.ref --- 92;
-%%wforms-ann.parquet.ref --- 92;
-%%tweets-geo.parquet.ref --- 92;
-%%_04[/ita-regions.geojson/]:::extdata --- 92;
-%%_04[/ita-regions.geojson/]:::extdata --- 90;
-%%_05[/wld-nations.geojson/]:::extdata --- 90;
-%%places.parquet.ref --- 90;
-%%tweets.parquet.ref --- 90;
-%%90 -.-> 90;
-%%91 -.-> 91;
-%%92 -.-> 92;
-%%end
-%%P1 -.- P5;
-%%P2 -.- P5;
-%%P3 -.- P5;
-%%P4 -.- P5;
-%%P4 ~~~~~~~~ P5;
+subgraph P5 [ANALYSIS]
+direction LR;
+90[90_tweets-statistics.ipynb]:::code;
+91[91_wforms-statistics.ipynb]:::code;
+92[92_annos-statistics.ipynb]:::code;
+97[97_yield-statistics.ipynb]:::code;
+99[99_geo-statistics.ipynb]:::code;
+
+places.parquet.ref[/places.parquet/]:::dataref;
+tweets.parquet.ref[/tweets.parquet/]:::dataref;
+tweets-*.parquet[/tweets-*.parquet/]:::dataref;
+wforms-*.parquet[/wforms-*.parquet/]:::dataref;
+
+tweets.parquet.ref --- 90;
+places.parquet.ref --- 90;
+
+tweets-*.parquet --- 91;
+wforms-*.parquet --- 91;
+
+wforms-*.parquet --- 92;
+wforms-*.parquet --- 97;
+
+tweets-*.parquet --- 99;
+wforms-*.parquet --- 99;
+end
+
+P4 ~~~~~~~~ P5;
 
 P1 ~~~~~~~~ P2;
 
