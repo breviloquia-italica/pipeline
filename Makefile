@@ -57,8 +57,8 @@ wforms-ann.parquet: 51_process-ann-batches.md
 
 # ANALYSIS
 
-# NOTE: this is a bit overkill, but dependencies are still wildly changing here.
-9%-statistics.ipynb: places*.parquet tweets*.parquet wforms*.parquet
+# NOTE: these two prereqs trigger everything else.
+9%-statistics.ipynb: tweets-geo.parquet wforms-ann.parquet
 	jupyter nbconvert --execute --to notebook --inplace $@
 
 analysis: 9*-statistics.ipynb
