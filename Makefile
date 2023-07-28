@@ -1,32 +1,34 @@
 # TODO: add dependencies from lib
 
-# DATAPREP
+# PREPARATION
 
-# NOTE: this is a proxy for data retrieval, which we don't perform every time ofc.
+# NOTE: this is a proxy for data retrieval.
 data: data.zip
 	unzip data.zip -d data
 
 places.jsonl: data
 	./10_extract-places.sh
 
-tweets.jsonl: data
-	./11_extract-tweets.sh
-
-tweets.csv: data
-	./12_flatten-tweets.sh
-
 places.parquet: places.jsonl
 	./20_cleanup-places.py
+
+tweets.jsonl: data
+	./11_extract-tweets.sh
 
 tweets.parquet: tweets.jsonl
 	./21_cleanup-tweets.py
 
-# NOTE: we skip dependency on external dataset
-tweets-tok.parquet: tweets.parquet
-	./30_tokenize-tweets.py
+tweets.csv: data
+	./12_flatten-tweets.sh
 
+# TRANSFORMATION
+
+# NOTE: we skip dependency on external geographic datasets.
 tweets-geo.parquet: places.parquet tweets.parquet
 	./31_locate-tweets.py
+
+tweets-tok.parquet: tweets.parquet
+	./30_tokenize-tweets.py
 
 # SELECTION
 
@@ -36,28 +38,27 @@ wforms-occ.parquet: tweets-tok.parquet
 wforms-usr.parquet: tweets-tok.parquet
 	./41_compute-wforms-usr.py
 
+# NOTE: we skip dependency on external attestation dataset.
 wforms-bat.parquet: wforms-occ.parquet wforms-usr.parquet
 	./42_compute-wforms-bat.py
 
 # ANNOTATION
 
-# NOTE: there's an optional dependency from wforms-ann.parquet here
+# NOTE: there's an optional dependency from wforms-ann.parquet here.
 wforms-ann-batch-1.csv wforms-ann-batch-2.csv: wforms-bat.parquet
 	./50_export-ann-batches.py
 
+# NOTE: this is a proxy for an external manual process.
 51_process-ann-batches.md: tweets.csv wforms-ann-batch-1.csv wforms-ann-batch-2.csv
 	touch 51_process-ann-batches.md
 
-# NOTE: we depend on the CSVs since we can't depende on the gsheets
-wforms-ann.parquet: wforms-ann-batch-1.csv wforms-ann-batch-2.csv 51_process-ann-batches.md
+wforms-ann.parquet: 51_process-ann-batches.md
 	./52_import-ann-batches.py
 
 # ANALYSIS
 
-# NOTE: we skip dependency on remote dataset
-90_tweets-statistics.ipynb: places.parquet tweets.parquet
-	jupyter nbconvert --execute --to notebook --inplace 90_tweets-statistics.ipynb
+# NOTE: this is a bit overkill, but dependencies are still wildly changing here.
+9%-statistics.ipynb: places*.parquet tweets*.parquet wforms*.parquet
+	jupyter nbconvert --execute --to notebook --inplace $@
 
-# NOTE: we skip dependency on remote dataset
-92_annos-statistics.ipynb: tweets-geo.parquet tweets-tok.parquet wforms-ann.parquet
-	jupyter nbconvert --execute --to notebook --inplace 92_annos-statistics.ipynb
+analysis: 9*-statistics.ipynb
