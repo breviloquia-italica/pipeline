@@ -67,5 +67,24 @@ assert ann["wf"].duplicated().sum() == 0
 # Aggregate: save dataset.
 ann.set_index("wf", inplace=True)
 
+
+
+# ...and here's the last minute emergency patch ofc.
+ext = pd.read_excel("bi-inn-forms-w-cats_STE_GRE.xlsx", sheet_name="Sheet4", header=None, names=["wf", "category"])
+assert not ext["wf"].isin(ann.index).all()
+ext.loc[ext["wf"].eq("mavattelapijànd'erculo"), "wf"] = "mavattelapijànd'"
+assert ext["wf"].isin(ann.index).all()
+assert ext["category"].isna().any()
+ext.loc[ext["wf"].eq("memiamo"), "category"] = "suffissazione"
+assert not ext["category"].isna().any()
+ext.set_index("wf", inplace=True)
+ann.loc[ann["status"].eq(1), "status"] = -1
+ann["category"] = np.nan
+ann.loc[ann.index.isin(ext.index), "status"] = 1
+ann.update(ext)
+
+
+
+
 # Save dataset.
 ann.to_parquet("wforms-ann.parquet")
