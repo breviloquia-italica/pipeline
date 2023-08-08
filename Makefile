@@ -18,9 +18,8 @@ hpc-push:
 
 #-[ Preparation ]-----------------------
 
-# NOTE: this is a proxy for data retrieval.
 data: data.zip
-	unzip data.zip -d data
+	./00_retrieve-data.sh
 
 places.jsonl: data
 	./10_extract-places.sh

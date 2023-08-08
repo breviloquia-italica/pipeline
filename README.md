@@ -5,7 +5,7 @@ flowchart TD;
 
 subgraph P1 [PREPARATION]
 
-00[[00_data-retrieval.md]]:::code;
+00[[00_retrieve-data.sh]]:::code;
 10[10_extract-places.sh]:::code;
 11[11_extract-tweets.sh]:::code;
 12[12_flatten-tweets.sh]:::code;
