@@ -1,6 +1,22 @@
+#=[ HPC cluster sync ]==================
+
+HPC_USER = pbrasolin@eurac.edu
+HPC_HOST = hpc.scientificnet.org
+HPC_PATH = /data/users/eurac\\\\pbrasolin/bi/
+
+rsync := rsync -avh --progress --include='**.gitignore' --exclude='/.git' --filter=':- .gitignore'
+
+hpc-pull:
+	$(rsync) $(HPC_USER)@$(HPC_HOST):$(HPC_PATH) ./
+
+hpc-push:
+	$(rsync) ./ $(HPC_USER)@$(HPC_HOST):$(HPC_PATH)
+
+#=[ Pipeline ]==========================
+
 # TODO: add dependencies from lib
 
-# PREPARATION
+#-[ Preparation ]-----------------------
 
 # NOTE: this is a proxy for data retrieval.
 data: data.zip
@@ -21,7 +37,7 @@ tweets.parquet: tweets.jsonl
 tweets.csv: data
 	./12_flatten-tweets.sh
 
-# TRANSFORMATION
+#-[ Transformation ]--------------------
 
 # NOTE: we skip dependency on external geographic datasets.
 tweets-geo.parquet: places.parquet tweets.parquet
@@ -30,7 +46,7 @@ tweets-geo.parquet: places.parquet tweets.parquet
 tweets-tok.parquet: tweets.parquet
 	./30_tokenize-tweets.py
 
-# SELECTION
+#-[ Selection ]-------------------------
 
 wforms-occ.parquet: tweets-tok.parquet
 	./40_compute-wforms-occ.py
@@ -55,7 +71,7 @@ wforms-ann-batch-1.csv wforms-ann-batch-2.csv: wforms-bat.parquet
 wforms-ann.parquet: 51_process-ann-batches.md
 	./52_import-ann-batches.py
 
-# ANALYSIS
+#-[ Analysis ]--------------------------
 
 # NOTE: these two prereqs trigger everything else.
 9%-statistics.ipynb: tweets-geo.parquet wforms-ann.parquet
