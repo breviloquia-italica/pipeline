@@ -6,6 +6,9 @@ HPC_PATH = /data/users/eurac\\\\pbrasolin/bi/
 
 rsync := rsync -avh --progress --include='**.gitignore' --exclude='/.git' --filter=':- .gitignore'
 
+hpc-ssh:
+	ssh $(HPC_USER)@$(HPC_HOST)
+
 hpc-pull:
 	$(rsync) $(HPC_USER)@$(HPC_HOST):$(HPC_PATH) ./
 
