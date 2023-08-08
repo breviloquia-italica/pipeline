@@ -80,3 +80,23 @@ wforms-ann.parquet: 51_process-ann-batches.md
 	jupyter nbconvert --execute --to notebook --inplace $@
 
 analysis: 9*-statistics.ipynb
+
+#=[ Goodies ]===========================
+
+#-[ HPC cluster sync ]------------------
+
+HPC_USER = pbrasolin@eurac.edu
+HPC_HOST = hpc.scientificnet.org
+HPC_PATH = /data/users/eurac\\\\pbrasolin/bi/
+
+rsync := rsync -avh --progress --include='**.gitignore' --exclude='/.git' --filter=':- .gitignore'
+
+hpc-ssh:
+	ssh $(HPC_USER)@$(HPC_HOST)
+
+hpc-pull:
+	$(rsync) $(HPC_USER)@$(HPC_HOST):$(HPC_PATH) ./
+
+hpc-push:
+	$(rsync) ./ $(HPC_USER)@$(HPC_HOST):$(HPC_PATH)
+
