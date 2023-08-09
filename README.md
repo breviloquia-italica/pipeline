@@ -41,7 +41,7 @@ tweets-tok.parquet[/tweets-tok.parquet/]:::data;
 tweets-geo.parquet[/tweets-geo.parquet/]:::data;
 
 _02[/italy-regions.geojson/]:::extdata --- 31;
-places.parquet ----- 31;
+places.parquet --- 31;
 tweets.parquet --- 31;
 31 --> tweets-geo.parquet;
 
@@ -98,18 +98,29 @@ wforms-ann-batch-N.gsheet.csv --- 52;
 
 end
 
+P1 ~~~~~~~ P2;
+P2 ~~~~ P3;
+P3 ~~~~~~ P4;
+
+classDef code stroke:red;
+classDef data stroke:green;
+classDef extdata stroke:blue;
+```
+
+```mermaid
+flowchart LR;
+
 subgraph P5 [ANALYSIS]
-direction LR;
 90[90_tweets-statistics.ipynb]:::code;
 91[91_wforms-statistics.ipynb]:::code;
 92[92_annos-statistics.ipynb]:::code;
 97[97_yield-statistics.ipynb]:::code;
 99[99_geo-statistics.ipynb]:::code;
 
-places.parquet.ref[/places.parquet/]:::dataref;
-tweets.parquet.ref[/tweets.parquet/]:::dataref;
-tweets-*.parquet[/tweets-*.parquet/]:::dataref;
-wforms-*.parquet[/wforms-*.parquet/]:::dataref;
+places.parquet.ref[/places.parquet/]:::data;
+tweets.parquet.ref[/tweets.parquet/]:::data;
+tweets-*.parquet[/tweets-*.parquet/]:::data;
+wforms-*.parquet[/wforms-*.parquet/]:::data;
 
 _01[/world-nations.geojson/]:::extdata --- 90;
 tweets.parquet.ref --- 90;
@@ -125,14 +136,7 @@ tweets-*.parquet --- 99;
 wforms-*.parquet --- 99;
 end
 
-P4 ~~~~~~~~ P5;
-
-P1 ~~~~~~~~ P2;
-
 classDef code stroke:red;
 classDef data stroke:green;
 classDef extdata stroke:blue;
-classDef dataref stroke:green,stroke-width:2px,stroke-dasharray: 10 10,font-style:italic;
 ```
-
----
