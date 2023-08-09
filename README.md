@@ -80,7 +80,7 @@ subgraph P4 [ANNOTATION]
 52[52_import-ann-batches.py]:::code;
 
 wforms-ann-batch-N.csv[/"wforms-ann-batch-{1,2}.csv"/]:::data
-wforms-ann-batch-N.gsheet[/"wforms-ann-{batch-1,batch-2,patches}.gsheet"/]:::extdata;
+wforms-ann-batch-N.gsheet.csv[/"wforms-ann-{batch-1,batch-2,patches}.gsheet.csv"/]:::extdata;
 wforms-ann.parquet[/wforms-ann.parquet/]:::data;
 wforms-ann.csv[/wforms-ann.csv/]:::data;
 
@@ -90,9 +90,9 @@ wforms-bat.parquet --- 50;
 
 wforms-ann-batch-N.csv --- 51;
 tweets.csv --- 51;
-51 --> wforms-ann-batch-N.gsheet;
+51 --> wforms-ann-batch-N.gsheet.csv;
 
-wforms-ann-batch-N.gsheet --- 52;
+wforms-ann-batch-N.gsheet.csv --- 52;
 52 --> wforms-ann.parquet;
 52 --> wforms-ann.csv;
 
