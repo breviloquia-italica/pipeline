@@ -1,11 +1,9 @@
 #=[ Pipeline ]==========================
 
-# TODO: add dependencies from lib
-
 #-[ Preparation ]-----------------------
 
 data: data.zip
-	./00_retrieve-data.sh
+	./00_unpack-data.sh
 
 places.jsonl: data
 	./10_extract-places.sh
@@ -16,11 +14,13 @@ places.parquet: places.jsonl
 tweets.jsonl: data
 	./11_extract-tweets.sh
 
-tweets.parquet: tweets.jsonl
+tweets.parquet: tweets.jsonl lib/entities.py
 	./21_cleanup-tweets.py
 
 tweets.csv: data
 	./12_flatten-tweets.sh
+
+preparation: data places.jsonl places.parquet tweets.jsonl tweets.parquet tweets.csv
 
 #-[ Transformation ]--------------------
 

@@ -5,20 +5,22 @@ flowchart TD;
 
 subgraph P1 [PREPARATION]
 
-00[[00_retrieve-data.sh]]:::code;
+00[00_unpack-data.sh]:::code;
 10[10_extract-places.sh]:::code;
 11[11_extract-tweets.sh]:::code;
 12[12_flatten-tweets.sh]:::code;
 20[20_cleanup-places.py]:::code;
 21[21_cleanup-tweets.py]:::code;
 
-2022-MM-DD.jsonl[/2022-MM-DD.jsonl/]:::data;
+data.zip[/data.zip/]:::extdata;
+2022-MM-DD.jsonl[/data/2022-MM-DD.jsonl/]:::data;
 places.jsonl[/places.jsonl/]:::data;
 places.parquet[/places.parquet/]:::data;
 tweets.jsonl[/tweets.jsonl/]:::data;
 tweets.parquet[/tweets.parquet/]:::data;
 tweets.csv[/tweets.csv/]:::data;
 
+data.zip --- 00;
 00 --> 2022-MM-DD.jsonl;
 
 2022-MM-DD.jsonl --- 10 --> places.jsonl;
