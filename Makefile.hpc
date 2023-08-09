@@ -1,0 +1,41 @@
+#=[ HPC cluster management ]============
+
+SHELL:=/bin/bash
+
+HPC_USER = pbrasolin@eurac.edu
+HPC_HOST = hpc.scientificnet.org
+HPC_PATH = /data/users/eurac\\pbrasolin/bi/
+HPC_HOME = /home/clusterusers/pbrasolin_eurac/
+HPC_VENV = $(HPC_HOME)/venv/bi/
+HPC_PYMD = python/3.10.8-gcc-12.1.0-linux-ubuntu22.04-x86_64
+
+ssh:
+	ssh $(HPC_USER)@$(HPC_HOST)
+
+#-[ File synchronization ]--------------
+
+rsync := rsync -avh --progress --include='**.gitignore' --exclude='/.git' --filter=':- .gitignore'
+
+pull:
+	$(rsync) -s $(HPC_USER)@$(HPC_HOST):$(HPC_PATH) ./
+
+push:
+	$(rsync) -s ./ $(HPC_USER)@$(HPC_HOST):$(HPC_PATH)
+
+#-[ Python environment ]----------------
+
+# $(HPC_VENV)/bin/pip install numpy scipy pandas geopandas topojson shapely modin[ray] spacy emoji tqdm matplotlib seaborn jupyterlab jupyter-resource-usage jupyterlab-code-formatter black isort jupyterlab-widgets ipywidgets
+venv-create:
+	module purge; \
+	module load $(HPC_PYMD); \
+	python -m venv $(HPC_VENV); \
+	$(HPC_VENV)/bin/pip install -r requirements.txt
+
+venv-remove:
+	echo -e "Please run this yourself:\nrm -rf $(HPC_VENV)\n"
+
+jupyterlab:
+	export HPC_PYMD=$(HPC_PYMD); \
+	export HPC_VENV=$(HPC_VENV); \
+	export HPC_PATH=$(HPC_PATH); \
+	./jupyterlab.sh
