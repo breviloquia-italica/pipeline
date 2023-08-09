@@ -19,7 +19,7 @@ tweets.jsonl[/tweets.jsonl/]:::data;
 tweets.parquet[/tweets.parquet/]:::data;
 tweets.csv[/tweets.csv/]:::data;
 
-data.zip --- 00;
+data.zip[/data.zip/]:::extdata --- 00;
 00 --> 2022-MM-DD.jsonl;
 
 2022-MM-DD.jsonl --- 10 --> places.jsonl;
