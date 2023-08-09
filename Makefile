@@ -1,5 +1,21 @@
 #=[ Pipeline ]==========================
 
+#-[ External data sources ]-------------
+
+data.zip:
+	@echo "You must provide $@ yourself."
+	@exit 1
+
+attested-forms.csv:
+	@echo "You must provide $@ yourself."
+	@exit 1
+
+world-nations.geojson:
+	curl -o $@ "https://data.opendatasoft.com/api/explore/v2.1/catalog/datasets/natural-earth-countries-1_110m@public/exports/geojson?lang=en&timezone=Europe%2FBerlin"
+
+italy-regions.geojson:
+	curl -o $@ "https://raw.githubusercontent.com/openpolis/geojson-italy/master/geojson/limits_IT_regions.geojson"
+
 #-[ Preparation ]-----------------------
 
 data: data.zip
