@@ -16,6 +16,15 @@ world-nations.geojson:
 italy-regions.geojson:
 	curl -o $@ "https://raw.githubusercontent.com/openpolis/geojson-italy/master/geojson/limits_IT_regions.geojson"
 
+wforms-ann-batch-1.gsheet.csv:
+	curl -o $@ -L "https://docs.google.com/spreadsheets/d/1MCzAM0QRlW6symBUQrlxgVgsaxfJVxf_zlwNu_1gGW8/export?format=csv"
+
+wforms-ann-batch-2.gsheet.csv:
+	curl -o $@ -L "https://docs.google.com/spreadsheets/d/1PckY4B9B1jKjsfbIBr2_XwkkcN85UzYQ7cf-vUNQVxo/export?format=csv"
+
+wforms-ann-patches.gsheet.csv:
+	curl -o $@ -L "https://docs.google.com/spreadsheets/d/1xOVWZ0Q4NMUANhha97sv_SD25i9A_c1WaAiTPY5dmfo/export?format=csv"
+
 #-[ Preparation ]-----------------------
 
 data: data.zip
@@ -36,7 +45,7 @@ tweets.parquet: tweets.jsonl lib/entities.py
 tweets.csv: data
 	./12_flatten-tweets.sh
 
-preparation: data places.jsonl places.parquet tweets.jsonl tweets.parquet tweets.csv
+preparation: places.parquet tweets.parquet tweets.csv
 
 #-[ Transformation ]--------------------
 
@@ -59,20 +68,21 @@ wforms-usr.parquet: tweets-tok.parquet
 wforms-bat.parquet: wforms-occ.parquet wforms-usr.parquet attested-forms.csv
 	./42_compute-wforms-bat.py
 
-selection: wforms-occ.parquet wforms-usr.parquet wforms-bat.parquet
+selection: wforms-bat.parquet
 
 #-[ Annotation ]------------------------
 
-# NOTE: there's an optional dependency from wforms-ann.parquet here.
 wforms-ann-batch-1.csv wforms-ann-batch-2.csv: wforms-bat.parquet
 	./50_export-ann-batches.py
 
-# NOTE: this is a proxy for an external manual process.
 51_process-ann-batches.md: tweets.csv wforms-ann-batch-1.csv wforms-ann-batch-2.csv
+	@echo "This is a proxy for an external manual process."
 	touch 51_process-ann-batches.md
 
-wforms-ann.parquet: 51_process-ann-batches.md
+wforms-ann.parquet wforms-ann.csv: 51_process-ann-batches.md wforms-ann-batch-1.gsheet.csv wforms-ann-batch-2.gsheet.csv wforms-ann-patches.gsheet.csv
 	./52_import-ann-batches.py
+
+annotation: wforms-ann.parquet wforms-ann.csv
 
 #-[ Analysis ]--------------------------
 
