@@ -12,7 +12,6 @@ subgraph P1 [PREPARATION]
 20[20_cleanup-places.py]:::code;
 21[21_cleanup-tweets.py]:::code;
 
-data.zip[/data.zip/]:::extdata;
 2022-MM-DD.jsonl[/data/2022-MM-DD.jsonl/]:::data;
 places.jsonl[/places.jsonl/]:::data;
 places.parquet[/places.parquet/]:::data;
@@ -41,8 +40,7 @@ subgraph P2 [TRANSFORMATION]
 tweets-tok.parquet[/tweets-tok.parquet/]:::data;
 tweets-geo.parquet[/tweets-geo.parquet/]:::data;
 
-_01[/world-nations.geojson/]:::extdata --- 31;
-_02[/italy-regions.geojson/]:::extdata ---- 31;
+_02[/italy-regions.geojson/]:::extdata --- 31;
 places.parquet ----- 31;
 tweets.parquet --- 31;
 31 --> tweets-geo.parquet;
@@ -110,6 +108,7 @@ tweets.parquet.ref[/tweets.parquet/]:::dataref;
 tweets-*.parquet[/tweets-*.parquet/]:::dataref;
 wforms-*.parquet[/wforms-*.parquet/]:::dataref;
 
+_01[/world-nations.geojson/]:::extdata --- 90;
 tweets.parquet.ref --- 90;
 places.parquet.ref --- 90;
 

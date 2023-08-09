@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import modin.pandas as pd
-import re
 from emoji import replace_emoji
 from lib.tokenizer import tokenize_and_filter_wforms
 
@@ -21,10 +20,7 @@ tweets["tokens"] = (
 # Quantize timestamp as day of year.
 tweets["doy"] = tweets["created_at"].dt.dayofyear
 
-# NOTE: remember NOT to deduplicate to avoid undercounting.
-# tweets["wforms"] = tweets["wforms"].apply(set)
-# tweets["wforms_new"] = tweets["wforms_new"].apply(set)
-
+# Count tokens.
 tweets["token_count"] = tweets["tokens"].apply(len)
 
 # Save dataset.

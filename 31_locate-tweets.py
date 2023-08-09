@@ -6,9 +6,7 @@ import pandas as pd
 import shapely
 
 # Load Italian regions geometry dataset.
-regions = gpd.read_file(
-    filename=r"https://raw.githubusercontent.com/openpolis/geojson-italy/master/geojson/limits_IT_regions.geojson"
-)
+regions = gpd.read_file("italy-regions.geojson")
 
 places = pd.read_parquet(
     "places.parquet", columns=["place_type", "country_code", "centroid"]

@@ -12,7 +12,7 @@ wforms = ui_fpt_at_doy.add_prefix("ui_").join(wf_fpm_at_doy.add_prefix("oc_"))
 del wf_fpm_at_doy, ui_fpt_at_doy
 
 # Load old attested forms dataset and check presence.
-attested_forms = set(pd.read_csv("lessico-TreeTagger.csv", header=None)[0].str.lower())
+attested_forms = set(pd.read_csv("attested-forms.csv", header=None)[0].str.lower())
 attested_forms |= {"#" + f for f in attested_forms}
 wforms["tt_att"] = wforms.index.isin(attested_forms)
 
