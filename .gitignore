@@ -5,3 +5,6 @@ data/
 *.jsonl
 *.parquet
 *.csv
+*.geojson
+*.pdf
+*.xlsx
