@@ -108,35 +108,54 @@ classDef extdata stroke:blue;
 ```
 
 ```mermaid
-flowchart LR;
+flowchart TB;
 
 subgraph P5 [ANALYSIS]
-90[90_tweets-statistics.ipynb]:::code;
-91[91_wforms-statistics.ipynb]:::code;
-92[92_annos-statistics.ipynb]:::code;
-97[97_yield-statistics.ipynb]:::code;
-99[99_geo-statistics.ipynb]:::code;
+90[90_basic-stats.ipynb]:::code;
+91[91_choro-stats.ipynb]:::code;
+92[92_annos-stats.ipynb]:::code;
+98[98_parts-chart.py]:::code;
+99[99_choro-chart.py]:::code;
 
-places.parquet.ref[/places.parquet/]:::data;
-tweets.parquet.ref[/tweets.parquet/]:::data;
-tweets-*.parquet[/tweets-*.parquet/]:::data;
-wforms-*.parquet[/wforms-*.parquet/]:::data;
+places.parquet[/places.parquet/]:::data;
+tweets.parquet[/tweets.parquet/]:::data;
+tweets-tok.parquet[/tweets-tok.parquet/]:::data;
+wforms-bat.parquet[/wforms-bat.parquet/]:::data;
+world-nations.geojson[/world-nations.geojson/]:::extdata;
+italy-regions.geojson[/italy-regions.geojson/]:::extdata;
 
-_01[/world-nations.geojson/]:::extdata --- 90;
-tweets.parquet.ref --- 90;
-places.parquet.ref --- 90;
+world-nations.geojson ---- 90;
+italy-regions.geojson ---- 90;
+tweets.parquet --- 90;
+places.parquet --- 90;
+wforms-bat.parquet --- 90;
+tweets-tok.parquet --- 90;
+90 -.-> 90;
 
-tweets-*.parquet --- 91;
-wforms-*.parquet --- 91;
+italy-regions.geojson ---- 91;
+D9[/"wforms-{bat,ann}.parquet"/]:::dataref --- 91;
+D8[/"tweets-{tok,geo}.parquet"/]:::dataref --- 91;
+91 -.-> 91;
 
-wforms-*.parquet --- 92;
-wforms-*.parquet --- 97;
+D1[/"wforms-{ann,bat,occ,usr}.parquet"/]:::dataref --- 92;
+%% for spacing only:
+italy-regions.geojson ~~~ D1;
+92 -.-> 92;
 
-tweets-*.parquet --- 99;
-wforms-*.parquet --- 99;
+D2[/"wforms-{occ,usr}.parquet"/]:::dataref --- 98;
+98 --> subsets.pdf;
+98 -.-> 98;
+
+italy-regions.geojson ---- 99;
+D3[/"wforms-{bat,ann}.parquet"/]:::dataref --- 99;
+D4[/"tweets-{tok,geo}.parquet"/]:::dataref --- 99;
+99 --> choros-*.pdf["choros-{sample,more-1,more-2}.pdf"];
+99 -.-> 99;
+
 end
 
 classDef code stroke:red;
 classDef data stroke:green;
 classDef extdata stroke:blue;
+classDef dataref stroke:green,stroke-width:2px,stroke-dasharray: 10 10,font-style:italic;
 ```
