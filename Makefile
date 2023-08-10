@@ -86,8 +86,9 @@ annotation: wforms-ann.parquet wforms-ann.csv
 
 #-[ Analysis ]--------------------------
 
-# NOTE: these two prereqs trigger everything else.
-9%-statistics.ipynb: tweets-geo.parquet wforms-ann.parquet world-nations.geojson italy-regions.geojson
+# NOTE: sorry for the makefile magic, but these dependencies are annoying to track manually.
+.SECONDEXPANSION:
+%.ipynb: $$(shell grep -hoE '(\w|-)+\.(geojson|parquet)' $$@ | tr '\n' ' ')
 	jupyter nbconvert --execute --to notebook --inplace $@
 
-analysis: 9*-statistics.ipynb
+analysis: 90_basic-stats.ipynb 92_annos-stats.ipynb 99_choro-chart.ipynb 91_choro-stats.ipynb 98_parts-chart.ipynb
