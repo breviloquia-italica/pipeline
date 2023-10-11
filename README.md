@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/667960391.svg)](https://zenodo.org/badge/latestdoi/667960391)
+
 # Breviloquia Italica: data pipeline
 
 ```mermaid
