@@ -4,7 +4,7 @@ authors:
     given-names: Paolo
     orcid: https://orcid.org/0000-0003-2471-7797
 url: https://github.com/breviloquia-italica/pipeline
-title: Breviloquia Italica Pipeline
-# date-released: TODO
-# version: TODO
-# doi: TODO
+title: "Breviloquia Italica: data pipeline"
+date-released: "2023-10-11"
+version: 1.0.0
+# doi:

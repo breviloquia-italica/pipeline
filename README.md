@@ -1,4 +1,4 @@
-# breviloquia-italica-pipeline
+# Breviloquia Italica: data pipeline
 
 ```mermaid
 flowchart TD;
