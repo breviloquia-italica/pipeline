@@ -1,6 +1,6 @@
 # Breviloquia Italica: data pipeline
 
-[![DOI](https://zenodo.org/badge/667960391.svg)](https://zenodo.org/badge/latestdoi/667960391)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8430341.svg)](https://doi.org/10.5281/zenodo.8430341)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
 This resource contains the full sourcecode for the data pipeline of the [Breviloquia Italica](https://github.com/breviloquia-italica) project.
