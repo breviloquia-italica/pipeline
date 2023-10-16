@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2023-10-16
+
 ### Added
 
 - Improved documentation.
@@ -22,8 +24,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First release.
 
-[unreleased]: https://github.com/breviloquia-italica/pipeline/compare/v1.0.0...HEAD
-
-<!-- [1.1.0]: https://github.com/breviloquia-italica/pipeline/compare/v1.0.0...v1.1.0 -->
-
+[unreleased]: https://github.com/breviloquia-italica/pipeline/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/breviloquia-italica/pipeline/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/breviloquia-italica/pipeline/releases/tag/v1.0.0
