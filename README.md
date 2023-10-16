@@ -7,6 +7,10 @@ This resource contains the full sourcecode for the data pipeline of the [Brevilo
 
 ## Description
 
+The pipeline is organized into a series of numbered scripts subdivided into the stages of preparation, transformation, selection and annotation.
+Their dependencies are encoded into `Makefile`, which can also be executed to targeting specific outputs in the pipeline.
+Here is a dependency graph depicting inputs, scripts and outputs:
+
 ```mermaid
 flowchart TD;
 
@@ -114,6 +118,9 @@ classDef data stroke:green;
 classDef extdata stroke:blue;
 ```
 
+Data visualizations and statistics are produced by a few Python scripts, including some Jupyter notebooks.
+`Makefile` encodes the dependencies of these too, as depicted in this graph:
+
 ```mermaid
 flowchart TB;
 
@@ -166,6 +173,10 @@ classDef data stroke:green;
 classDef extdata stroke:blue;
 classDef dataref stroke:green,stroke-width:2px,stroke-dasharray: 10 10,font-style:italic;
 ```
+
+`jupyterlab.sh` and `Makefile.hpc` are development tools used to prepare and run the pipeline in our HPC environment, and therefore are probably not of general interest.
+
+`requirements.txt` lists all Python dependencies as is customary.
 
 ## Authors
 
