@@ -5,7 +5,7 @@
 
 This resource contains the full sourcecode for the data pipeline of the [Breviloquia Italica](https://github.com/breviloquia-italica) project.
 
-## General structure
+## Description
 
 ```mermaid
 flowchart TD;
