@@ -176,7 +176,7 @@ classDef dataref stroke:green,stroke-width:2px,stroke-dasharray: 10 10,font-styl
 
 `jupyterlab.sh` and `Makefile.hpc` are development tools used to prepare and run the pipeline in our HPC environment, and therefore are probably not of general interest.
 
-`requirements.txt` lists all Python dependencies as is customary.
+`requirements.txt` lists all Python dependencies, as is customary.
 
 ## Authors
 
