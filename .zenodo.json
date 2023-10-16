@@ -1,0 +1,15 @@
+{
+  "creators": [
+    {
+      "name": "Brasolin, Paolo",
+      "orcid": "0000-0003-2471-7797"
+    }
+  ],
+  "license": {
+    "id": "CC-BY-4.0"
+  },
+  "publication_date": "2023-10-16",
+  "title": "Breviloquia Italica: data pipeline",
+  "upload_type": "software",
+  "version": "1.1.0"
+}
