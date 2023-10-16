@@ -165,3 +165,11 @@ classDef data stroke:green;
 classDef extdata stroke:blue;
 classDef dataref stroke:green,stroke-width:2px,stroke-dasharray: 10 10,font-style:italic;
 ```
+
+## Authors
+
+Paolo Brasolin.
+
+## License
+
+This work is openly licensed via [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
