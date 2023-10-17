@@ -8,7 +8,7 @@ This resource contains the full sourcecode for the data pipeline of the [Brevilo
 ## Description
 
 The pipeline is organized into a series of numbered scripts subdivided into the stages of preparation, transformation, selection and annotation.
-Their dependencies are encoded into `Makefile`, which can also be executed to targeting specific outputs in the pipeline.
+Their dependencies are encoded into `Makefile`, which can also be executed to target specific outputs in the pipeline.
 Here is a dependency graph depicting inputs, scripts and outputs:
 
 ```mermaid
