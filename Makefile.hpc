@@ -4,7 +4,7 @@ SHELL:=/bin/bash
 
 HPC_USER = pbrasolin@eurac.edu
 HPC_HOST = hpc.scientificnet.org
-HPC_PATH = /data/users/pbrasolin_eurac.edu/bi/
+HPC_PATH = /data/users/pbrasolin_eurac/bi/pipeline/
 HPC_HOME = /home/clusterusers/pbrasolin_eurac/
 HPC_VENV = $(HPC_HOME)/venv/bi/
 HPC_PYMD = python/3.10.8-gcc-12.1.0-linux-ubuntu22.04-x86_64
