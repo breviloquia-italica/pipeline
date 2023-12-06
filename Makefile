@@ -25,6 +25,10 @@ wforms-ann-batch-2.gsheet.csv:
 wforms-ann-patches.gsheet.csv:
 	curl -o $@ -L "https://docs.google.com/spreadsheets/d/1xOVWZ0Q4NMUANhha97sv_SD25i9A_c1WaAiTPY5dmfo/export?format=csv"
 
+wforms-ann-phase-2.gsheet.csv:
+	curl -o $@ -L "https://docs.google.com/spreadsheets/d/1BsdGc_Ql4EInzNVBmP7cWZjayY3AvoTL2SiMfSPa4J0/export?format=csv"
+
+
 #-[ Preparation ]-----------------------
 
 data: data.zip
