@@ -16,6 +16,9 @@ world-nations.geojson:
 italy-regions.geojson:
 	curl -o $@ "https://raw.githubusercontent.com/openpolis/geojson-italy/master/geojson/limits_IT_regions.geojson"
 
+italy-provinces.geojson:
+	curl -o $@ "https://raw.githubusercontent.com/openpolis/geojson-italy/master/geojson/limits_IT_provinces.geojson"
+
 wforms-ann-batch-1.gsheet.csv:
 	curl -o $@ -L "https://docs.google.com/spreadsheets/d/1MCzAM0QRlW6symBUQrlxgVgsaxfJVxf_zlwNu_1gGW8/export?format=csv"
 
@@ -53,7 +56,7 @@ preparation: places.parquet tweets.parquet tweets.csv
 
 #-[ Transformation ]--------------------
 
-tweets-geo.parquet: places.parquet tweets.parquet italy-regions.geojson
+tweets-geo.parquet: places.parquet tweets.parquet italy-provinces.geojson
 	./31_locate-tweets.py
 
 tweets-tok.parquet: tweets.parquet lib/tokenizer.py

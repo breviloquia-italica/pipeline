@@ -5,8 +5,8 @@ import geopandas as gpd
 import pandas as pd
 import shapely
 
-# Load Italian regions geometry dataset.
-regions = gpd.read_file("italy-regions.geojson")
+# Load Italian provinces geometry dataset.
+provinces = gpd.read_file("italy-provinces.geojson")
 
 places = pd.read_parquet(
     "places.parquet", columns=["place_type", "country_code", "centroid"]
@@ -28,11 +28,11 @@ italian_places = (
         gpd.GeoDataFrame(italian_places, geometry="centroid", crs="EPSG:4326").to_crs(
             "EPSG:32632"
         ),
-        regions.to_crs("EPSG:32632"),
+        provinces.to_crs("EPSG:32632"),
         how="left",
     )
     .to_crs("EPSG:4326")
-    .drop(columns=["index_right", "reg_name", "reg_istat_code_num"])
+    .drop(columns=["index_right", "prov_name", "prov_istat_code_num", "prov_acr", "reg_name", "reg_istat_code_num"])
 )
 
 places = pd.concat([foreign_places, italian_nation, italian_places])
