@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Repair breakages due to convention changes in HPC cluster.
+
+### Added
+
+- Extend tweet localization to provinces.
+- Benchmark to compare methodologies performance.
+- Export of extended list of occurrences.
+- Script to export tweets ids.
+- Workbook to explore methodologies yields.
+- Workbook to inspect South Tyrolean data.
+
 ## [1.1.1] - 2023-10-16
 
 ### Fixed
