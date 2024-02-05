@@ -109,9 +109,28 @@ wforms-ann-batch-N.gsheet.csv --- 52;
 
 end
 
+subgraph P5 [EXPORT]
+
+60[60_export-tweets-ids.sh]:::code;
+61[61_export-occurrences.py]:::code;
+
+tweets-ids.csv[/tweets-ids.csv/]:::data;
+occurrences.csv[/occurrences.csv/]:::data;
+
+2022-MM-DD.jsonl --- 60 ----> tweets-ids.csv;
+
+tweets.jsonl --> 61;
+tweets-geo.parquet --> 61;
+wforms-occ.parquet --> 61;
+wforms-ann.parquet --> 61;
+61 --> occurrences.csv;
+
+end
+
 P1 ~~~~~~~ P2;
 P2 ~~~~ P3;
 P3 ~~~~~~ P4;
+P4 ~~~~~~~~ P5;
 
 classDef code stroke:red;
 classDef data stroke:green;
@@ -173,6 +192,8 @@ classDef data stroke:green;
 classDef extdata stroke:blue;
 classDef dataref stroke:green,stroke-width:2px,stroke-dasharray: 10 10,font-style:italic;
 ```
+
+Workbooks named as `XX_*.ipynb` are dead ends or in-progress work, so they are not documented in the graphs above.
 
 `jupyterlab.sh` and `Makefile.hpc` are development tools used to prepare and run the pipeline in our HPC environment, and therefore are probably not of general interest.
 
