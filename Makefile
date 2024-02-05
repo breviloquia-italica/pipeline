@@ -103,7 +103,7 @@ analysis: 90_basic-stats.ipynb 92_annos-stats.ipynb 99_choro-chart.ipynb 91_chor
 #-[ Export ]-----------------------------
 
 tweets-ids.csv: data
-	./60_extract-tweets-ids.sh
+	./60_export-tweets-ids.sh
 
 occurrences.csv: tweets.jsonl tweets-geo.parquet wforms-occ.parquet wforms-ann.parquet
 	./61_export-occurrences.py
