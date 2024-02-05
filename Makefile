@@ -99,3 +99,11 @@ annotation: wforms-ann.parquet wforms-ann.csv
 	jupyter nbconvert --execute --to notebook --inplace $@
 
 analysis: 90_basic-stats.ipynb 92_annos-stats.ipynb 99_choro-chart.ipynb 91_choro-stats.ipynb 98_parts-chart.ipynb
+
+#-[ Export ]-----------------------------
+
+tweets-ids.csv: data
+	./60_extract-tweets-ids.sh
+
+occurrences.csv: tweets.jsonl tweets-geo.parquet wforms-occ.parquet wforms-ann.parquet
+	./61_export-occurrences.py
