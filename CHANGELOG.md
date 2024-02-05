@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2024-02-05
+
 ### Fixed
 
 - Repair breakages due to convention changes in HPC cluster.
@@ -43,7 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First release.
 
-[unreleased]: https://github.com/breviloquia-italica/pipeline/compare/v1.1.1...HEAD
+[unreleased]: https://github.com/breviloquia-italica/pipeline/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/breviloquia-italica/pipeline/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/breviloquia-italica/pipeline/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/breviloquia-italica/pipeline/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/breviloquia-italica/pipeline/releases/tag/v1.0.0
